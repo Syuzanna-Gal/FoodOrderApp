@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface BasketRepository {
 
-    fun subscribeBasketItems(): Flow<List<BasketItemUiEntity?>>
+    fun subscribeBasketItems(): Flow<List<BasketItemUiEntity>>
 
     suspend fun addToBasket(dishUiEntity: DishUiEntity, quantity: Int)
 

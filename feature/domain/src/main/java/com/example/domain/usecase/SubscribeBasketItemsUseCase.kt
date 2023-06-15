@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class SubscribeBasketItemsUseCase @Inject constructor(private val repository: BasketRepository) {
-    operator fun invoke(): Flow<List<BasketItemUiEntity?>> =
+    operator fun invoke(): Flow<List<BasketItemUiEntity>> =
         repository.subscribeBasketItems().flowOn(Dispatchers.IO)
 }

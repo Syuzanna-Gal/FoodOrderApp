@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 class CategoryRepositoryImpl @Inject constructor(private val mainApi: MainApi) :
     CategoryRepository {
-    override fun fetchCategories(): Flow<List<CategoryUiEntity?>> = flow {
+    override fun fetchCategories(): Flow<List<CategoryUiEntity>> = flow {
         val result = mainApi.fetchCategories()
         emit(MapperCategoryToUiEntity().map(result.categories))
     }

@@ -7,3 +7,4 @@ const val USER_PIC_URL =
 const val USER_PIC_IMAGE_RADIUS = 100F
 const val DATE_FORMAT = "dd MMMM, yyyy"
 val DATE_LOCALE_TYPE = Locale("RU")
+const val IMAGE_CORNER_RADIUS = 10F

@@ -26,7 +26,7 @@ class BasketViewModel @Inject constructor(
     val currentAddressDelegate: CurrentAddressDelegate,
 ) : BaseViewModel() {
 
-    private val _basketItemsList = MutableStateFlow<List<BasketItemUiEntity?>?>(null)
+    private val _basketItemsList = MutableStateFlow<List<BasketItemUiEntity>?>(null)
     val basketItemsList = _basketItemsList.asStateFlow()
 
     private val _paymentAmount = MutableStateFlow<Double?>(null)

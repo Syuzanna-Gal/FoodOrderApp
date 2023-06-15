@@ -19,7 +19,7 @@ class HomeViewModel @Inject constructor(
     val currentAddressDelegate: CurrentAddressDelegate,
 ) : BaseViewModel() {
 
-    private val _categoriesList = MutableStateFlow<List<CategoryUiEntity?>?>(null)
+    private val _categoriesList = MutableStateFlow<List<CategoryUiEntity>?>(null)
     val categoriesList = _categoriesList.asStateFlow()
 
     init {

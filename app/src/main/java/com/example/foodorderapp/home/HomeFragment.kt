@@ -13,7 +13,8 @@ import com.example.coreui.util.USER_PIC_URL
 import com.example.foodorderapp.R
 import com.example.foodorderapp.core.base.BaseFragment
 import com.example.foodorderapp.databinding.FragmentHomeBinding
-import com.example.foodorderapp.home.adapter.CategoryAdapter
+import com.example.foodorderapp.home.adapter.categoryAdapterDelegate
+import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,13 +24,14 @@ class HomeFragment() : BaseFragment<HomeViewModel>(R.layout.fragment_home) {
     override val viewModel: HomeViewModel by viewModels()
 
     private val categoriesAdapter by lazy {
-        CategoryAdapter(onCategoryClick = {
-            viewModel.navigateToDishFragment(it)
-        })
+        ListDelegationAdapter(
+            categoryAdapterDelegate {
+                viewModel.navigateToDishFragment(it)
+            })
     }
 
     override fun initView() = with(binding) {
-        rvCategory.adapter = categoriesAdapter.adapter
+        rvCategory.adapter = categoriesAdapter
         rvCategory.addItemDecoration(AdaptiveSpacingItemDecoration(8.dp, edgeEnabled = true))
         ivUserPic.load(USER_PIC_URL) {
             transformations(RoundedCornersTransformation(USER_PIC_IMAGE_RADIUS))
@@ -38,9 +40,10 @@ class HomeFragment() : BaseFragment<HomeViewModel>(R.layout.fragment_home) {
     }
 
     override fun initObservers() {
-        collectWhenStarted(viewModel.categoriesList) {
-            it?.let {
-                categoriesAdapter.adapter.submitList(it)
+        collectWhenStarted(viewModel.categoriesList) { list ->
+            list?.let {
+                categoriesAdapter.items = it
+                categoriesAdapter.notifyItemRangeChanged(0, it.size)
             }
         }
         collectWhenStarted(viewModel.currentAddressDelegate.currentAddress) {

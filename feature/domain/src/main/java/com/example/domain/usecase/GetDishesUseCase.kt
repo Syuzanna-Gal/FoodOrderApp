@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class GetDishesUseCase @Inject constructor(private val repository: DishesRepository) {
-    operator fun invoke(): Flow<List<DishUiEntity?>> =
+    operator fun invoke(): Flow<List<DishUiEntity>> =
         repository.fetchDishes().flowOn(Dispatchers.IO)
 }

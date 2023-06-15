@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class GetCategoryUseCase @Inject constructor(private val repository: CategoryRepository) {
-    operator fun invoke(): Flow<List<CategoryUiEntity?>> =
+    operator fun invoke(): Flow<List<CategoryUiEntity>> =
         repository.fetchCategories().flowOn(Dispatchers.IO)
 }

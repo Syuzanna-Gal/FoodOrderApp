@@ -8,7 +8,6 @@ import com.example.domain.entity.BasketItemUiEntity
 import com.example.domain.entity.DishUiEntity
 import com.example.domain.repository.BasketRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,7 +16,7 @@ import javax.inject.Singleton
 class BasketRepositoryImpl @Inject constructor(private val basketItemDao: BasketItemDao) :
     BasketRepository {
 
-    override fun subscribeBasketItems(): Flow<List<BasketItemUiEntity?>> =
+    override fun subscribeBasketItems(): Flow<List<BasketItemUiEntity>> =
         basketItemDao.findAllAsFlow().map {
             MapperBasketItemToUiEntity().map(it)
         }
@@ -40,7 +39,7 @@ class BasketRepositoryImpl @Inject constructor(private val basketItemDao: Basket
     }
 
     override fun getBasketItemById(id: Int): BasketItemUiEntity? =
-        MapperBasketItemToUiEntity().map(basketItemDao.findById(id))
+        basketItemDao.findById(id)?.let { MapperBasketItemToUiEntity().map(it) }
 
 
     override suspend fun deleteAll() = basketItemDao.deleteAll()

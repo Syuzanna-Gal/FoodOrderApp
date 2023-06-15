@@ -14,12 +14,13 @@ import com.example.coreui.util.USER_PIC_IMAGE_RADIUS
 import com.example.coreui.util.USER_PIC_URL
 import com.example.coreui.util.setOnSingleClickListener
 import com.example.foodorderapp.R
-import com.example.foodorderapp.basket.adapter.BasketItemsAdapter
+import com.example.foodorderapp.basket.adapter.basketAdapterDelegate
 import com.example.foodorderapp.core.base.BaseFragment
 import com.example.foodorderapp.databinding.FragmentBasketBinding
 import com.example.foodorderapp.util.TextSource
 import com.example.foodorderapp.util.event.InfoEvent
 import com.example.foodorderapp.util.type_alias.RString
+import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,11 +30,15 @@ class BasketFragment : BaseFragment<BasketViewModel>(R.layout.fragment_basket) {
     override val viewModel: BasketViewModel by viewModels()
 
     private val basketAdapter by lazy {
-        BasketItemsAdapter(onAddClick = {
-            viewModel.addItem(it)
-        }, onRemoveClick = {
-            viewModel.removeItem(it)
-        })
+        ListDelegationAdapter(
+            basketAdapterDelegate(
+                onAddClick = {
+                    viewModel.addItem(it)
+                }, onRemoveClick = {
+                    viewModel.removeItem(it)
+                }
+            )
+        )
     }
 
     override fun initView() = with(binding) {
@@ -43,7 +48,7 @@ class BasketFragment : BaseFragment<BasketViewModel>(R.layout.fragment_basket) {
             transformations(RoundedCornersTransformation(USER_PIC_IMAGE_RADIUS))
         }
         tvTime.text = getCurrentDate()
-        rvCategory.adapter = basketAdapter.adapter
+        rvCategory.adapter = basketAdapter
         rvCategory.addItemDecoration(AdaptiveSpacingItemDecoration(16.dp, edgeEnabled = true))
         btnPay.setOnSingleClickListener {
             viewModel.emitInfoEvent(
@@ -60,7 +65,8 @@ class BasketFragment : BaseFragment<BasketViewModel>(R.layout.fragment_basket) {
     override fun initObservers() {
         collectWhenStarted(viewModel.basketItemsList) {
             it?.let {
-                basketAdapter.adapter.submitList(it)
+                basketAdapter.items = it
+                basketAdapter.notifyItemRangeChanged(0, it.size)
                 binding.tvBasketIsEmpty.isVisible = it.isEmpty() == true
                 binding.btnPay.isVisible = it.isEmpty() == false
             }

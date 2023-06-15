@@ -43,7 +43,7 @@ class HomeFragment() : BaseFragment<HomeViewModel>(R.layout.fragment_home) {
         collectWhenStarted(viewModel.categoriesList) { list ->
             list?.let {
                 categoriesAdapter.items = it
-                categoriesAdapter.notifyItemRangeChanged(0, it.size)
+                categoriesAdapter.notifyDataSetChanged()
             }
         }
         collectWhenStarted(viewModel.currentAddressDelegate.currentAddress) {

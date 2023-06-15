@@ -53,7 +53,7 @@ class DishesFragment : BaseFragment<DishesViewModel>(R.layout.fragment_dishes) {
         collectWhenStarted(viewModel.dishesList) { list ->
             list?.let {
                 dishesAdapter.items = it
-                dishesAdapter.notifyItemRangeChanged(0, it.size)
+                dishesAdapter.notifyDataSetChanged()
             }
         }
 

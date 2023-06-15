@@ -66,7 +66,7 @@ class BasketFragment : BaseFragment<BasketViewModel>(R.layout.fragment_basket) {
         collectWhenStarted(viewModel.basketItemsList) {
             it?.let {
                 basketAdapter.items = it
-                basketAdapter.notifyItemRangeChanged(0, it.size)
+                basketAdapter.notifyDataSetChanged()
                 binding.tvBasketIsEmpty.isVisible = it.isEmpty() == true
                 binding.btnPay.isVisible = it.isEmpty() == false
             }
